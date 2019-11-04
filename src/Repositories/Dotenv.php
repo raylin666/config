@@ -46,6 +46,11 @@ class Dotenv
      * 配置构造工厂
      *
      * @param array|null $adapters
+     * 例: [
+                new EnvConstAdapter,
+                new PutenvAdapter,
+                new ServerConstAdapter
+            ]
      * @return DotenvFactory
      */
     public static function envFactory(array $adapters = null)
