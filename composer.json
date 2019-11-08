@@ -1,8 +1,8 @@
 {
   "name": "shugachara/config",
   "type": "library",
-  "description": "文件配置加载",
-  "keywords" : ["framework", "env", "file", "config"],
+  "description": "文件环境配置",
+  "keywords" : ["framework", "env", "file", "config", "dotenv"],
   "homepage": "https://github.com/shugachara/config",
   "license" : "Apache-2.0",
   "authors": [
