@@ -13,6 +13,7 @@
   ],
   "require": {
     "php": ">=7.1.0",
+    "shugachara/core": "^1.0",
     "vlucas/phpdotenv": "^3.6"
   },
   "autoload": {

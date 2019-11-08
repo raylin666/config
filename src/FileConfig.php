@@ -64,12 +64,13 @@ class FileConfig
 
     /**
      * 加载配置目录
-     * @param $path
+     * @param        $path
+     * @param string $ext
      */
-    public function loadPath($path)
+    public function loadPath($path, $ext = '.php')
     {
-        foreach (glob($path . '/*.php') as $file) {
-            $filename = str_replace('.php', '', basename($file));
+        foreach (glob($path . '/*' . $ext) as $file) {
+            $filename = str_replace($ext, '', basename($file));
             if (! in_array($filename, $this->filterFile)) {
                 $this->config = ArrayHelper::merge(
                     $this->config,
