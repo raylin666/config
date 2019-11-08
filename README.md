@@ -16,6 +16,7 @@ composer require "shugachara/config"
 
 ### 使用方式
 
+```php
 <?php 
 use Dotenv\Environment\Adapter\EnvConstAdapter;
 use Dotenv\Environment\Adapter\PutenvAdapter;
@@ -69,6 +70,7 @@ class {
     }
 }
 ?>
+```
 
 ## 更新日志
 
