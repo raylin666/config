@@ -30,6 +30,9 @@ class FileConfig
      */
     private $filterFile = [];
 
+    /**
+     * FileConfig constructor.
+     */
     public function __construct() {}
 
     /**

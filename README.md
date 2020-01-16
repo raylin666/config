@@ -25,7 +25,7 @@ use ShugaChara\Config\FileConfig;
 use ShugaChara\Config\Repositories\Dotenv;
 use ShugaChara\Container\Container;
 
-class {
+class C {
     
     public function __construct(Container $container)
     {
