@@ -11,7 +11,6 @@
 
 namespace ShugaChara\Config;
 
-use ShugaChara\Core\Helpers;
 use ShugaChara\Core\Utils\Helper\ArrayHelper;
 
 /**
@@ -22,6 +21,9 @@ use ShugaChara\Core\Utils\Helper\ArrayHelper;
  */
 class FileConfig
 {
+    /**
+     * @var array
+     */
     protected $config = [];
 
     /**
@@ -50,8 +52,7 @@ class FileConfig
      */
     public function loadConfig($config): array
     {
-        $this->config = ArrayHelper::merge($this->config, $config);
-        return $this->config;
+        return $this->config = ArrayHelper::merge($this->config, $config);
     }
 
     /**
@@ -61,8 +62,7 @@ class FileConfig
      */
     public function loadFile($file)
     {
-        $config = Helpers::loadFile($file);
-        return $this->loadConfig($config);
+        return $this->loadConfig(load_conf_file($file));
     }
 
     /**
@@ -78,7 +78,7 @@ class FileConfig
                 $this->config = ArrayHelper::merge(
                     $this->config,
                     [
-                        $filename       =>      Helpers::loadFile($file)
+                        $filename       =>      load_conf_file($file)
                     ]
                 );
             }
@@ -100,7 +100,7 @@ class FileConfig
      * 获取所有配置项
      * @return array
      */
-    public function all()
+    public function all(): array
     {
         return (array) $this->config;
     }
