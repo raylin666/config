@@ -21,6 +21,8 @@ use ShugaChara\Core\Utils\Helper\ArrayHelper;
  */
 class FileConfig
 {
+    const EXT = '.php';
+
     /**
      * @var array
      */
@@ -52,13 +54,17 @@ class FileConfig
      */
     public function loadConfig($config): array
     {
-        return $this->config = ArrayHelper::merge($this->config, $config);
+        foreach ($config as $key => $value) {
+            $this->config[$key] = $value;
+        }
+
+        return $this->config;
     }
 
     /**
      * 加载配置文件
      * @param $file
-     * @return array|bool|mixed
+     * @return array
      */
     public function loadFile($file)
     {
@@ -70,17 +76,14 @@ class FileConfig
      * @param        $path
      * @param string $ext
      */
-    public function loadPath($path, $ext = '.php')
+    public function loadPath($path, $ext = self::EXT)
     {
         foreach (glob($path . '/*' . $ext) as $file) {
             $filename = str_replace($ext, '', basename($file));
             if (! in_array($filename, $this->filterFile)) {
-                $this->config = ArrayHelper::merge(
-                    $this->config,
-                    [
-                        $filename       =>      load_conf_file($file)
-                    ]
-                );
+                $this->loadConfig([
+                    $filename   =>  load_conf_file($file)
+                ]);
             }
         }
     }
