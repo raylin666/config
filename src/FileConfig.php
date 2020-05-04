@@ -89,6 +89,17 @@ class FileConfig
     }
 
     /**
+     * 设置配置
+     * @param $key
+     * @param $value
+     * @return array
+     */
+    public function set($key, $value)
+    {
+        return ArrayHelper::set($this->config, $key, $value);
+    }
+
+    /**
      * 获取配置
      * @param      $key
      * @param null $default
