@@ -30,12 +30,16 @@ $container->singleton(\Raylin666\Config\ConfigFactory::class, function ($contain
     return $factory;
 });
 
+// 获得 config 工厂实例
+$container->make(\Raylin666\Config\ConfigFactory::class);
+
 $container->singleton(\Raylin666\Contract\ConfigInterface::class, function ($container) {
     $factory = $container->get(\Raylin666\Config\ConfigFactory::class);
     return $factory();
 });
 
-var_dump($container->get(\Raylin666\Contract\ConfigInterface::class));
+// 获得 config 配置实例
+$container->make(\Raylin666\Contract\ConfigInterface::class);
 
 ```
 
