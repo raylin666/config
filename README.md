@@ -1,21 +1,45 @@
-# 文件配置加载
+# 服务配置
 
-[![GitHub release](https://img.shields.io/github/release/shugachara/config.svg)](https://github.com/shugachara/config/releases)
-[![PHP version](https://img.shields.io/badge/php-%3E%207-orange.svg)](https://github.com/php/php-src)
+[![GitHub release](https://img.shields.io/github/release/raylin666/config.svg)](https://github.com/raylin666/config/releases)
+[![PHP version](https://img.shields.io/badge/php-%3E%207.2-orange.svg)](https://github.com/php/php-src)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](#LICENSE)
 
 ### 环境要求
 
-* PHP >=7.0
+* PHP >=7.2
 
 ### 安装说明
 
 ```
-composer require "shugachara/config"
+composer require "raylin666/config"
 ```
 
 ### 使用方式
-暂无(可阅读代码)
+
+```php
+
+<?php
+
+require_once 'vendor/autoload.php';
+
+$container = new \Raylin666\Container\Container();
+
+$container->singleton(\Raylin666\Config\ConfigFactory::class, function ($container) {
+    $factory = new \Raylin666\Config\ConfigFactory($container);
+    $factory->setBasePath(__DIR__);
+    return $factory;
+});
+
+$container->singleton(\Raylin666\Contract\ConfigInterface::class, function ($container) {
+    $factory = $container->get(\Raylin666\Config\ConfigFactory::class);
+    return $factory();
+});
+
+var_dump($container->get(\Raylin666\Contract\ConfigInterface::class));
+
+```
+
+### 测试
 
 ## 更新日志
 
@@ -25,7 +49,7 @@ composer require "shugachara/config"
 
 非常欢迎感兴趣，愿意参与其中，共同打造更好PHP生态，Swoole生态的开发者。
 
-* 在你的系统中使用，将遇到的问题 [反馈](https://github.com/shugachara/config/issues)
+* 在你的系统中使用，将遇到的问题 [反馈](https://github.com/raylin666/config/issues)
 
 ### 联系
 

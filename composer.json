@@ -1,26 +1,33 @@
 {
-  "name": "shugachara/config",
+  "name": "raylin666/config",
   "type": "library",
-  "description": "文件环境配置",
-  "keywords" : ["framework", "env", "file", "config", "dotenv"],
-  "homepage": "https://github.com/shugachara/config",
+  "description": "An independent component that provides configuration container",
+  "keywords" : [
+    "framework",
+    "env",
+    "file",
+    "config",
+    "configuration",
+    "php",
+    "swoole"
+  ],
+  "homepage": "https://github.com/raylin666/config",
   "license" : "Apache-2.0",
   "authors": [
     {
-      "name": "shugachara",
+      "name": "raylin666",
       "email": "1099013371@qq.com"
     }
   ],
   "require": {
-    "php": ">=7.1.0",
-    "vlucas/phpdotenv": "^3.6"
+    "php": ">=7.2",
+    "symfony/finder": "^5.0",
+    "raylin666/util": "dev-master"
   },
   "autoload": {
     "psr-4": {
-      "ShugaChara\\Config\\": "src/"
+      "Raylin666\\Config\\": "src/"
     },
-    "files": [
-      "helpers.php"
-    ]
+    "files": []
   }
 }
