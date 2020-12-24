@@ -45,10 +45,8 @@ class ConfigFactory implements FactoryInterface
     /**
      * @return ConfigInterface
      */
-    public function __invoke(): ConfigInterface
+    public function make(): ConfigInterface
     {
-        // TODO: Implement __invoke() method.
-
         if (empty($this->basePath)) {
             throw new RuntimeException('Please call `setBasePath` method first.');
         }
