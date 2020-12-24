@@ -41,7 +41,7 @@ var_dump($container->get(\Raylin666\Contract\ConfigInterface::class));
 
 ### 测试
 
-## 更新日志
+### 更新日志
 
 请查看 [CHANGELOG.md](CHANGELOG.md)
 
@@ -55,4 +55,4 @@ var_dump($container->get(\Raylin666\Contract\ConfigInterface::class));
 
 如果你在使用中遇到问题，请联系: [1099013371@qq.com](mailto:1099013371@qq.com). 博客: [kaka 梦很美](http://www.ls331.com)
 
-## License MIT
+### License MIT
