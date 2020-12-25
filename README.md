@@ -25,7 +25,7 @@ require_once 'vendor/autoload.php';
 $container = new \Raylin666\Container\Container();
 
 $container->singleton(\Raylin666\Contract\ConfigInterface::class, function ($container) {
-    return (new \Raylin666\Config\ConfigFactory(__DIR__))($container);
+    return (new \Raylin666\Config\ConfigFactory(__DIR__))($container)->make();
 });
 
 $container->get(\Raylin666\Contract\ConfigInterface::class);

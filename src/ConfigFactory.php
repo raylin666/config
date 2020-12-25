@@ -28,41 +28,53 @@ class ConfigFactory implements FactoryInterface
     protected $container;
 
     /**
-     * @var ConfigInterface[]
+     * @var string
      */
-    protected $config;
+    protected $path;
 
     /**
      * ConfigFactory constructor.
      * @param string $path
-     * @param string $configPathName
-     * @param string $configFileName
-     * @param string $readPathName
      */
-    public function __construct(
-        string $path = __DIR__,
-        $configPathName = 'config',
-        $configFileName = 'config',
-        $readPathName = 'autoload'
-    ) {
-        $configPath = $path . '/' . $configPathName . '/';
-        $config = $this->readConfig($configPath . $configFileName . '.php');
-        $autoloadConfig = $this->readPaths([$configPath . $readPathName]);
-        $merged = array_merge_recursive($config, ...$autoloadConfig);
-        $this->config = new Config($merged);
+    public function __construct(string $path)
+    {
+        $this->path = $path;
     }
 
     /**
      * @param ContainerInterface $container
-     * @return ConfigInterface
+     * @return FactoryInterface
      */
-    public function __invoke(ContainerInterface $container): ConfigInterface
+    public function __invoke(ContainerInterface $container): FactoryInterface
     {
         // TODO: Implement __invoke() method.
 
         $this->container = $container;
+        return $this;
+    }
 
-        return $this->config;
+    /**
+     * @param string $configPathName    配置目录
+     * @param string $configFileName    配置文件
+     * @param string $readPathName      配置读取文件目录
+     * @return ConfigInterface
+     */
+    public function make(
+        $configPathName = 'config',
+        $configFileName = 'config',
+        $readPathName = 'autoload'
+    ): ConfigInterface
+    {
+        $configPath = $this->path . '/' . $configPathName . '/';
+        $config = $this->readConfig($configPath . $configFileName . '.php');
+        $autoloadConfig = $this->readPaths([$configPath . $readPathName]);
+
+        $merged = array_merge_recursive(
+            array_merge(['path' => $this->path], $config),
+            ...$autoloadConfig
+        );
+
+        return new Config($merged);
     }
 
     /**
