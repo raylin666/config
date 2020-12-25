@@ -28,7 +28,6 @@ $container->singleton(\Raylin666\Contract\ConfigInterface::class, function ($con
     return (new \Raylin666\Config\ConfigFactory(__DIR__))($container);
 });
 
-
 $container->get(\Raylin666\Contract\ConfigInterface::class);
 
 ```
