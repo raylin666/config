@@ -11,7 +11,6 @@
 
 namespace Raylin666\Config;
 
-use RuntimeException;
 use Symfony\Component\Finder\Finder;
 use Psr\Container\ContainerInterface;
 use Raylin666\Contract\FactoryInterface;
@@ -34,30 +33,65 @@ class ConfigFactory implements FactoryInterface
     protected $basePath;
 
     /**
-     * ConfigFactory constructor.
-     * @param ContainerInterface $container
+     * @var ConfigInterface[]
      */
-    public function __construct(ContainerInterface $container)
+    protected $config;
+
+    /**
+     * ConfigFactory constructor.
+     * @param string $path
+     */
+    public function __construct(string $path)
     {
-        $this->container = $container;
+        $this->basePath = $path;
     }
 
     /**
-     * @return ConfigInterface
+     * @param ContainerInterface $container
+     * @return FactoryInterface
      */
-    public function make(): ConfigInterface
+    public function __invoke(ContainerInterface $container): FactoryInterface
     {
-        if (empty($this->basePath)) {
-            throw new RuntimeException('Please call `setBasePath` method first.');
-        }
+        // TODO: Implement __invoke() method.
 
-        $configPath = $this->basePath . '/config/';
-        $config = $this->readConfig($configPath . 'config.php');
-        $autoloadConfig = $this->readPaths([$configPath . 'autoload']);
-        $merged = array_merge_recursive($config, ...$autoloadConfig);
-
-        return new Config($merged);
+        $this->container = $container;
+        return $this;
     }
+
+    /**
+     * 实例化配置
+     * @param string $configName        配置名
+     * @param string $configPathName    配置目录
+     * @param string $configFileName    配置文件
+     * @param string $readPathName      配置读取文件目录
+     * @return mixed
+     */
+    public function make(
+        string $configName = 'default',
+        $configPathName = 'config',
+        $configFileName = 'config',
+        $readPathName = 'autoload'
+    ) {
+        $configPath = $this->basePath . '/' . $configPathName . '/';
+        $config = $this->readConfig($configPath . $configFileName . '.php');
+        $autoloadConfig = $this->readPaths([$configPath . $readPathName]);
+        $merged = array_merge_recursive($config, ...$autoloadConfig);
+        $this->config[$configName] = new Config($merged);
+        return $this->config[$configName];
+    }
+
+    /**
+     * 获取配置对象
+     * @param string $name
+     * @return ConfigInterface|null
+     */
+    public function get(string $name = 'default'): ?ConfigInterface
+    {
+        if (isset($this->config[$name])) {
+            return $this->config[$name];
+        }
+    }
+
 
     /**
      * 读取文件配置
@@ -93,14 +127,6 @@ class ConfigFactory implements FactoryInterface
         }
 
         return $configs;
-    }
-
-    /**
-     * @param string $path
-     */
-    public function setBasePath(string $path)
-    {
-        $this->basePath = $path;
     }
 
     /**
