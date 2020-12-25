@@ -28,11 +28,6 @@ class ConfigFactory implements FactoryInterface
     protected $container;
 
     /**
-     * @var string
-     */
-    protected $basePath;
-
-    /**
      * @var ConfigInterface[]
      */
     protected $config;
@@ -40,48 +35,34 @@ class ConfigFactory implements FactoryInterface
     /**
      * ConfigFactory constructor.
      * @param string $path
+     * @param string $configPathName
+     * @param string $configFileName
+     * @param string $readPathName
      */
-    public function __construct(string $path)
-    {
-        $this->basePath = $path;
+    public function __construct(
+        string $path = __DIR__,
+        $configPathName = 'config',
+        $configFileName = 'config',
+        $readPathName = 'autoload'
+    ) {
+        $configPath = $path . '/' . $configPathName . '/';
+        $config = $this->readConfig($configPath . $configFileName . '.php');
+        $autoloadConfig = $this->readPaths([$configPath . $readPathName]);
+        $merged = array_merge_recursive($config, ...$autoloadConfig);
+        $this->config = new Config($merged);
     }
 
     /**
      * @param ContainerInterface $container
-     * @return FactoryInterface
+     * @return ConfigInterface
      */
-    public function __invoke(ContainerInterface $container): FactoryInterface
+    public function __invoke(ContainerInterface $container): ConfigInterface
     {
         // TODO: Implement __invoke() method.
 
         $this->container = $container;
-        return $this;
-    }
 
-    /**
-     * 生产并返回实例
-     * @param string $configName        配置名
-     * @param string $configPathName    配置目录
-     * @param string $configFileName    配置文件
-     * @param string $readPathName      配置读取文件目录
-     * @return ConfigInterface
-     */
-    public function make(
-        string $configName = 'default',
-        $configPathName = 'config',
-        $configFileName = 'config',
-        $readPathName = 'autoload'
-    ): ConfigInterface
-    {
-        if (isset($this->config[$configName]) && $this->config[$configName] instanceof Config) {
-            return $this->config[$configName];
-        }
-
-        $configPath = $this->basePath . '/' . $configPathName . '/';
-        $config = $this->readConfig($configPath . $configFileName . '.php');
-        $autoloadConfig = $this->readPaths([$configPath . $readPathName]);
-        $merged = array_merge_recursive($config, ...$autoloadConfig);
-        return $this->config[$configName] = new Config($merged);
+        return $this->config;
     }
 
     /**
@@ -118,21 +99,5 @@ class ConfigFactory implements FactoryInterface
         }
 
         return $configs;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBasePath()
-    {
-        return $this->basePath;
-    }
-
-    /**
-     * @return ContainerInterface
-     */
-    public function getContainer(): ContainerInterface
-    {
-        return $this->container;
     }
 }

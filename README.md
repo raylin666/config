@@ -24,13 +24,12 @@ require_once 'vendor/autoload.php';
 
 $container = new \Raylin666\Container\Container();
 
-$container->singleton(\Raylin666\Contract\ConfigInterface::class, \Raylin666\Config\ConfigFactory::class);
+$container->singleton(\Raylin666\Contract\ConfigInterface::class, function ($container) {
+    return (new \Raylin666\Config\ConfigFactory(__DIR__))($container);
+});
 
-($container->make(\Raylin666\Contract\ConfigInterface::class, [
-    'path' => __DIR__
-])($container))->make();
 
-$container->get(\Raylin666\Contract\ConfigInterface::class)->get()->toArray();
+$container->get(\Raylin666\Contract\ConfigInterface::class);
 
 ```
 
