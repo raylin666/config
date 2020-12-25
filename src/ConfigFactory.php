@@ -59,39 +59,30 @@ class ConfigFactory implements FactoryInterface
     }
 
     /**
-     * 实例化配置
+     * 生产并返回实例
      * @param string $configName        配置名
      * @param string $configPathName    配置目录
      * @param string $configFileName    配置文件
      * @param string $readPathName      配置读取文件目录
-     * @return mixed
+     * @return ConfigInterface
      */
     public function make(
         string $configName = 'default',
         $configPathName = 'config',
         $configFileName = 'config',
         $readPathName = 'autoload'
-    ) {
+    ): ConfigInterface
+    {
+        if (isset($this->config[$configName]) && $this->config[$configName] instanceof Config) {
+            return $this->config[$configName];
+        }
+
         $configPath = $this->basePath . '/' . $configPathName . '/';
         $config = $this->readConfig($configPath . $configFileName . '.php');
         $autoloadConfig = $this->readPaths([$configPath . $readPathName]);
         $merged = array_merge_recursive($config, ...$autoloadConfig);
-        $this->config[$configName] = new Config($merged);
-        return $this->config[$configName];
+        return $this->config[$configName] = new Config($merged);
     }
-
-    /**
-     * 获取配置对象
-     * @param string $name
-     * @return ConfigInterface|null
-     */
-    public function get(string $name = 'default'): ?ConfigInterface
-    {
-        if (isset($this->config[$name])) {
-            return $this->config[$name];
-        }
-    }
-
 
     /**
      * 读取文件配置
