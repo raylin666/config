@@ -1,4 +1,4 @@
-# 服务配置
+# 面向容器 - 服务配置
 
 [![GitHub release](https://img.shields.io/github/release/raylin666/config.svg)](https://github.com/raylin666/config/releases)
 [![PHP version](https://img.shields.io/badge/php-%3E%207.2-orange.svg)](https://github.com/php/php-src)
@@ -24,11 +24,11 @@ require_once 'vendor/autoload.php';
 
 $container = new \Raylin666\Container\Container();
 
-$container->singleton(\Raylin666\Contract\ConfigInterface::class, function ($container) {
-    return (new \Raylin666\Config\ConfigFactory(__DIR__))($container)->make();
-});
+$container->singleton(\Raylin666\Contract\ConfigInterface::class, \Raylin666\Config\ConfigFactory::class);
 
-$container->get(\Raylin666\Contract\ConfigInterface::class);
+$container->make(\Raylin666\Contract\ConfigInterface::class)->make(__DIR__);
+
+$container->get(\Raylin666\Contract\ConfigInterface::class)->get();
 
 ```
 

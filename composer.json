@@ -22,8 +22,7 @@
   "require": {
     "php": ">=7.2",
     "symfony/finder": "^5.0",
-    "raylin666/contract": "dev-master",
-    "raylin666/util": "dev-master"
+    "raylin666/util": "^1.0"
   },
   "autoload": {
     "psr-4": {

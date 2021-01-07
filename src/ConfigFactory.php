@@ -28,53 +28,63 @@ class ConfigFactory implements FactoryInterface
     protected $container;
 
     /**
-     * @var string
+     * @var ConfigInterface[]
      */
-    protected $path;
+    protected $configs = [];
 
     /**
      * ConfigFactory constructor.
-     * @param string $path
-     */
-    public function __construct(string $path)
-    {
-        $this->path = $path;
-    }
-
-    /**
      * @param ContainerInterface $container
-     * @return FactoryInterface
      */
-    public function __invoke(ContainerInterface $container): FactoryInterface
+    public function __construct(ContainerInterface $container)
     {
-        // TODO: Implement __invoke() method.
-
         $this->container = $container;
-        return $this;
     }
 
     /**
+     * @param string $path              根目录路径
+     * @param string $name              配置名称
      * @param string $configPathName    配置目录
      * @param string $configFileName    配置文件
      * @param string $readPathName      配置读取文件目录
      * @return ConfigInterface
      */
     public function make(
+        string $path,
+        string $name = 'default',
         $configPathName = 'config',
         $configFileName = 'config',
         $readPathName = 'autoload'
     ): ConfigInterface
     {
-        $configPath = $this->path . '/' . $configPathName . '/';
+        $configPath = $path . '/' . $configPathName . '/';
         $config = $this->readConfig($configPath . $configFileName . '.php');
-        $autoloadConfig = $this->readPaths([$configPath . $readPathName]);
+        $autoloadConfig = $this->readPaths([$path . '/' . $configPathName . '/' . $readPathName]);
 
         $merged = array_merge_recursive(
-            array_merge(['path' => $this->path], $config),
+            array_merge(['path' => $path], $config),
             ...$autoloadConfig
         );
 
-        return new Config($merged);
+        $this->configs[$name] = make(
+            Config::class,
+            [
+                'configs'   =>  $merged
+            ]
+        );
+
+        return $this->configs[$name];
+    }
+
+    /**
+     * @param string $name
+     * @return ConfigInterface|null
+     */
+    public function get(string $name = 'default'): ?ConfigInterface
+    {
+        if (isset($this->configs[$name]) && $this->configs[$name] instanceof ConfigInterface) {
+            return $this->configs[$name];
+        }
     }
 
     /**
