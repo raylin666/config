@@ -13,14 +13,13 @@ namespace Raylin666\Config;
 
 use Symfony\Component\Finder\Finder;
 use Psr\Container\ContainerInterface;
-use Raylin666\Contract\FactoryInterface;
 use Raylin666\Contract\ConfigInterface;
 
 /**
  * Class ConfigFactory
  * @package Raylin666\Config
  */
-class ConfigFactory implements FactoryInterface
+class ConfigFactory implements ConfigFactoryInterface
 {
     /**
      * @var ContainerInterface
@@ -57,6 +56,8 @@ class ConfigFactory implements FactoryInterface
         $readPathName = 'autoload'
     ): ConfigInterface
     {
+        // TODO: Implement make() method.
+
         $configPath = $path . '/' . $configPathName . '/';
         $config = $this->readConfig($configPath . $configFileName . '.php');
         $autoloadConfig = $this->readPaths([$path . '/' . $configPathName . '/' . $readPathName]);
@@ -82,6 +83,8 @@ class ConfigFactory implements FactoryInterface
      */
     public function get(string $name = 'default'): ?ConfigInterface
     {
+        // TODO: Implement get() method.
+
         if (isset($this->configs[$name]) && $this->configs[$name] instanceof ConfigInterface) {
             return $this->configs[$name];
         }
