@@ -27,11 +27,6 @@ class ConfigFactory implements ConfigFactoryInterface
     protected $container;
 
     /**
-     * @var ConfigInterface[]
-     */
-    protected $configs = [];
-
-    /**
      * ConfigFactory constructor.
      * @param ContainerInterface $container
      */
@@ -42,7 +37,6 @@ class ConfigFactory implements ConfigFactoryInterface
 
     /**
      * @param string $path              根目录路径
-     * @param string $name              配置名称
      * @param string $configPathName    配置目录
      * @param string $configFileName    配置文件
      * @param string $readPathName      配置读取文件目录
@@ -50,7 +44,6 @@ class ConfigFactory implements ConfigFactoryInterface
      */
     public function make(
         string $path,
-        string $name = 'default',
         $configPathName = 'config',
         $configFileName = 'config',
         $readPathName = 'autoload'
@@ -67,27 +60,12 @@ class ConfigFactory implements ConfigFactoryInterface
             ...$autoloadConfig
         );
 
-        $this->configs[$name] = make(
+        return make(
             Config::class,
             [
                 'configs'   =>  $merged
             ]
         );
-
-        return $this->configs[$name];
-    }
-
-    /**
-     * @param string $name
-     * @return ConfigInterface|null
-     */
-    public function get(string $name = 'default'): ?ConfigInterface
-    {
-        // TODO: Implement get() method.
-
-        if (isset($this->configs[$name]) && $this->configs[$name] instanceof ConfigInterface) {
-            return $this->configs[$name];
-        }
     }
 
     /**

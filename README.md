@@ -24,11 +24,16 @@ require_once 'vendor/autoload.php';
 
 $container = new \Raylin666\Container\Container();
 
-$container->singleton(\Raylin666\Contract\ConfigInterface::class, \Raylin666\Config\ConfigFactory::class);
+// 绑定抽象配置工厂
+$container->bind(\Raylin666\Config\ConfigFactoryInterface::class, \Raylin666\Config\ConfigFactory::class);
 
-$container->make(\Raylin666\Contract\ConfigInterface::class)->make(__DIR__);
+// 绑定配置类
+$container->singleton(\Raylin666\Contract\ConfigInterface::class, function ($container) {
+    return $container->get(\Raylin666\Config\ConfigFactoryInterface::class)->make(__DIR__);
+});
 
-$container->get(\Raylin666\Contract\ConfigInterface::class)->get();
+// 获取配置
+var_dump($container->get(\Raylin666\Contract\ConfigInterface::class));
 
 ```
 

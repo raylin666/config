@@ -22,17 +22,10 @@ interface ConfigFactoryInterface extends FactoryInterface
 {
     /**
      * @param string $path              根目录路径
-     * @param string $name              配置名称
      * @param string $configPathName    配置目录
      * @param string $configFileName    配置文件
      * @param string $readPathName      配置读取文件目录
      * @return ConfigInterface
      */
-    public function make(string $path, string $name = 'default', $configPathName = 'config', $configFileName = 'config', $readPathName = 'autoload'): ConfigInterface;
-
-    /**
-     * @param string $name
-     * @return ConfigInterface|null
-     */
-    public function get(string $name = 'default'): ?ConfigInterface;
+    public function make(string $path, $configPathName = 'config', $configFileName = 'config', $readPathName = 'autoload'): ConfigInterface;
 }
