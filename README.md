@@ -48,8 +48,6 @@ var_dump($config->toArray());
 
 ```
 
-### 测试
-
 ### 更新日志
 
 请查看 [CHANGELOG.md](CHANGELOG.md)
