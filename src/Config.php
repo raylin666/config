@@ -26,14 +26,14 @@ class Config implements ConfigInterface
     /**
      * @var array
      */
-    protected $configs = [];
+    protected $config = [];
 
     /**
-     * @param array $configs
+     * @param array $config
      */
-    public function __invoke(array $configs)
+    public function __invoke(array $config)
     {
-        $this->configs = $configs;
+        $this->config = $config;
     }
 
     /**
@@ -85,7 +85,7 @@ class Config implements ConfigInterface
     {
         // TODO: Implement set() method.
 
-        ArrayHelper::set($this->configs, $key, $value);
+        ArrayHelper::set($this->config, $key, $value);
     }
 
     /**
@@ -96,7 +96,7 @@ class Config implements ConfigInterface
     {
         // TODO: Implement has() method.
 
-        return ArrayHelper::has($this->configs, $key);
+        return ArrayHelper::has($this->config, $key);
     }
 
     /**
@@ -108,7 +108,7 @@ class Config implements ConfigInterface
     {
         // TODO: Implement get() method.
 
-        return ArrayHelper::get($this->configs, $key, $default);
+        return ArrayHelper::get($this->config, $key, $default);
     }
 
     /**
@@ -116,7 +116,7 @@ class Config implements ConfigInterface
      */
     public function toArray(): array
     {
-        return $this->configs;
+        return $this->config;
     }
 
     /**
