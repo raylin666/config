@@ -1,12 +1,12 @@
-# 面向容器 - 服务配置
+# A simple configuration service
 
 [![GitHub release](https://img.shields.io/github/release/raylin666/config.svg)](https://github.com/raylin666/config/releases)
-[![PHP version](https://img.shields.io/badge/php-%3E%207.2-orange.svg)](https://github.com/php/php-src)
+[![PHP version](https://img.shields.io/badge/php-%3E%207.0-orange.svg)](https://github.com/php/php-src)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](#LICENSE)
 
 ### 环境要求
 
-* PHP >=7.2
+* PHP >=7.0
 
 ### 安装说明
 
@@ -22,18 +22,29 @@ composer require "raylin666/config"
 
 require_once 'vendor/autoload.php';
 
-$container = new \Raylin666\Container\Container();
+$config = new \Raylin666\Config\Config;
 
-// 绑定抽象配置工厂
-$container->bind(\Raylin666\Config\ConfigFactoryInterface::class, \Raylin666\Config\ConfigFactory::class);
+$configArray = $config->make(__DIR__);
 
-// 绑定配置类
-$container->singleton(\Raylin666\Contract\ConfigInterface::class, function ($container) {
-    return $container->get(\Raylin666\Config\ConfigFactoryInterface::class)->make(__DIR__);
-});
+$config($configArray);
 
-// 获取配置
-var_dump($container->get(\Raylin666\Contract\ConfigInterface::class));
+var_dump($config->toArray());
+
+/**
+ * array(3) {
+        ["path"]=>
+        string(33) "/Users/raylin/Web/www/myApp"
+        ["name"]=>
+        string(6) "raylin"
+        ["database"]=>
+        array(2) {
+        ["host"]=>
+        string(9) "127.0.0.1"
+        ["port"]=>
+        int(3306)
+        }
+    }   
+ */
 
 ```
 
