@@ -37,18 +37,10 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param string $path              根目录路径
-     * @param string $configPathName    配置目录
-     * @param string $configFileName    配置文件
-     * @param string $readPathName      配置读取文件目录
+     * @param ConfigOptions $configOptions
      * @return array
      */
-    public function make(
-        string $path,
-        $configPathName = 'config',
-        $configFileName = 'app',
-        $readPathName = 'autoload'
-    ): array
+    public function make(ConfigOptions $configOptions): array
     {
         /**
          * 配置文件及目录 例如: /var/www/myApp/config/config.php
@@ -64,16 +56,10 @@ class Config implements ConfigInterface
          *                                  ...
          */
 
-        $configPath = $path . '/' . $configPathName . '/';
-        $config = $this->readConfig($configPath . $configFileName . self::CONFIG_FILE_EXT);
-        $autoloadConfig = $this->readPath([$path . '/' . $configPathName . '/' . $readPathName]);
-
-        $merged = array_merge_recursive(
-            array_merge(['path' => $path], $config),
-            ...$autoloadConfig
-        );
-
-        return $merged;
+        $configPath = $configOptions->getPath() . '/' . $configOptions->getConfigPathName() . '/';
+        $config = $this->readConfig($configPath . $configOptions->getConfigFileName() . self::CONFIG_FILE_EXT);
+        $autoloadConfig = $this->readPath([$configOptions->getPath() . '/' . $configOptions->getConfigPathName() . '/' . $configOptions->getReadPathName()]);
+        return array_merge_recursive($config, ...$autoloadConfig);
     }
 
     /**

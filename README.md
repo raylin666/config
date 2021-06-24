@@ -24,7 +24,7 @@ require_once 'vendor/autoload.php';
 
 $config = new \Raylin666\Config\Config;
 
-$configArray = $config->make(__DIR__);
+$configArray = $config->make(new \Raylin666\Config\ConfigOptions(__DIR__));
 
 $config($configArray);
 
